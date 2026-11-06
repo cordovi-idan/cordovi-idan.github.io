@@ -144,7 +144,7 @@ h3{margin:44px 0 20px;font:700 clamp(26px,3.4vw,36px)/1.05 var(--display);text-t
 .carousel{display:grid;gap:12px;min-width:0}
 .cbar{display:flex;align-items:center;justify-content:space-between;gap:16px}
 .count{font:500 12px/1.5 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.cbtns{display:flex;gap:8px}
+.cbtns{display:flex;gap:8px;margin-left:auto}
 .cbtns button{width:44px;height:44px;border:1px solid var(--line);background:none;color:var(--paper);font:400 20px/1 var(--body);cursor:pointer}
 .cbtns button:hover:not(:disabled){border-color:var(--finder);color:var(--finder)}
 .cbtns button:disabled{opacity:.3;cursor:default}
@@ -285,7 +285,7 @@ HTML = f"""<!doctype html>
 <div><dt>Editor</dt><dd>Michael Anug</dd></div>
 <div><dt>Post-production director</dt><dd>Rotem Gross</dd></div>
 </dl></div>
-<div class="carousel"><div class="cbar"><span class="count">{len(STILLS) - 1} stills</span><span class="cbtns"><button type="button" class="prev" aria-label="Previous stills">&larr;</button><button type="button" class="next" aria-label="Next stills">&rarr;</button></span></div>
+<div class="carousel"><div class="cbar"><span class="cbtns"><button type="button" class="prev" aria-label="Previous stills">&larr;</button><button type="button" class="next" aria-label="Next stills">&rarr;</button></span></div>
 <div class="reel" tabindex="0" aria-label="Stills from Who Cares?, scroll sideways">
 {stills}
 </div></div>
