@@ -3,6 +3,7 @@
 from html import escape as e
 STILLS = [f"images/still-{i:02d}.jpg" for i in range(1, 20)]  # files in images/, shown in this order
 HERO = 0
+SITE = "https://cordovi-idan.github.io/"
 HERO_SLIDES = [0, 1, 3, 7, 13, 17, 6]  # indexes into STILLS, shown in the top frame in this order
 V = "https://i.vimeocdn.com/video/%s-d_640"
 def vm(title, vid, thumb, note=""):
@@ -97,10 +98,10 @@ a{color:inherit}
 :focus-visible{outline:2px solid var(--finder);outline-offset:3px}
 .wrap{max-width:1240px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--ink) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 24px;padding-block:12px}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 24px;padding-block:1px}
 .brand{font:800 24px/1 var(--display);letter-spacing:.04em;text-transform:uppercase;text-decoration:none}
 nav{display:flex;flex-wrap:wrap;gap:4px 20px}
-nav a{font:500 12px/1.8 var(--mono);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
+nav a{display:inline-block;padding-block:11px;font:500 12px/1.8 var(--mono);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
 nav a:hover{color:var(--finder)}
 .hero{padding-block:32px 0}
 h1{margin:0;font:900 clamp(68px,17.2vw,232px)/.84 var(--display);letter-spacing:-.005em;text-transform:uppercase;text-wrap:balance}
@@ -113,10 +114,10 @@ h1{margin:0;font:900 clamp(68px,17.2vw,232px)/.84 var(--display);letter-spacing:
 .scope img.on{opacity:1;z-index:2}
 .scope img.out{opacity:0;z-index:1}
 @keyframes drift{from{transform:scale(1.03)}to{transform:scale(1.12)}}
-.ticks{position:absolute;left:44px;right:44px;bottom:14px;z-index:3;display:flex;gap:6px;filter:drop-shadow(0 0 3px rgb(0 0 0 / .7))}
-.ticks button{flex:1;height:14px;padding:0;border:0;background:none;cursor:pointer;position:relative}
-.ticks button::before{content:"";position:absolute;left:0;right:0;top:6px;height:2px;background:rgb(241 238 230 / .35)}
-.ticks button::after{content:"";position:absolute;left:0;top:6px;height:2px;width:0;background:var(--finder)}
+.ticks{position:absolute;left:44px;right:44px;bottom:8px;z-index:3;display:flex;gap:6px;filter:drop-shadow(0 0 3px rgb(0 0 0 / .7))}
+.ticks button{flex:1;height:24px;padding:0;border:0;background:none;cursor:pointer;position:relative}
+.ticks button::before{content:"";position:absolute;left:0;right:0;top:11px;height:2px;background:rgb(241 238 230 / .35)}
+.ticks button::after{content:"";position:absolute;left:0;top:11px;height:2px;width:0;background:var(--finder)}
 .ticks button.done::after{width:100%}
 .ticks button.on::after{animation:fill 6s linear forwards}
 @keyframes fill{to{width:100%}}
@@ -134,7 +135,8 @@ h3{margin:44px 0 20px;font:700 clamp(26px,3.4vw,36px)/1.05 var(--display);text-t
 .credits div{display:grid;gap:3px;min-width:0}
 .credits dt{font:500 11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .credits dd{margin:0;font-weight:600;line-height:1.35}
-.reel{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:12px;scrollbar-color:var(--line) transparent}
+.reel{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior-x:contain;padding-bottom:6px;scrollbar-width:none}
+.reel::-webkit-scrollbar{display:none}
 .reel img{flex:0 0 min(82vw,680px);width:min(82vw,680px);height:auto;aspect-ratio:2.39/1;object-fit:cover;scroll-snap-align:start;background:var(--panel)}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px 20px}
 .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -185,7 +187,7 @@ dialog::backdrop{background:rgb(8 8 10 / .92)}
 .fallback span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:14px 22px;background:var(--finder);color:var(--ink);font:600 17px/1 var(--body);white-space:nowrap}
 .fallback:hover span{background:var(--paper)}
 @media (max-width:860px){.grid,.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.track{grid-auto-columns:calc((100% - 20px) / 2.2)}}
-@media (max-width:520px){.track{grid-auto-columns:82%;gap:14px}.grid,.grid.two{grid-template-columns:minmax(0,1fr)}section{padding-block:56px 0}.roles{display:grid}}
+@media (max-width:520px){.scope{aspect-ratio:4/3}.ticks{left:16px;right:16px}.track{grid-auto-columns:82%;gap:14px}.grid,.grid.two{grid-template-columns:minmax(0,1fr)}section{padding-block:56px 0}.roles{display:grid}}
 @media (prefers-reduced-motion:reduce){html,.track{scroll-behavior:auto}.scope img,.scope img.on{animation:none;transition:none;transform:none}.frame img,.frame::before,.frame::after{transition:none}.card:hover img{transform:none}}
 """
 
@@ -209,8 +211,8 @@ const fallback=()=>{if(!cur||!d.open)return;box.classList.remove('tall');const a
 document.querySelectorAll('.card[data-embed]').forEach(c=>c.addEventListener('click',()=>{cur=c;if(blocked)fallback()}));
 addEventListener('securitypolicyviolation',e=>{if(/frame|child/.test(e.violatedDirective)){blocked=true;fallback()}});
 document.querySelectorAll('.carousel').forEach(c=>{
-  const t=c.querySelector('.track'),pv=c.querySelector('.prev'),nx=c.querySelector('.next');
-  const step=()=>{const k=t.querySelector('.card');return k?k.getBoundingClientRect().width+parseFloat(getComputedStyle(t).columnGap||0):t.clientWidth};
+  const t=c.querySelector('.track,.reel'),pv=c.querySelector('.prev'),nx=c.querySelector('.next');
+  const step=()=>{const k=t.firstElementChild;return k?k.getBoundingClientRect().width+(parseFloat(getComputedStyle(t).columnGap)||0):t.clientWidth};
   const upd=()=>{pv.disabled=t.scrollLeft<4;nx.disabled=t.scrollLeft+t.clientWidth>=t.scrollWidth-4;c.querySelector('.cbtns').hidden=t.scrollWidth<=t.clientWidth+4};
   pv.addEventListener('click',()=>t.scrollBy({left:-step()}));nx.addEventListener('click',()=>t.scrollBy({left:step()}));
   t.addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);upd();
@@ -239,7 +241,13 @@ HTML = f"""<!doctype html>
 <meta name="description" content="Idan Cordovi is a cinematographer, producer, editor and colorist based in Tel Aviv, working in documentary, corporate and educational film.">
 <meta property="og:title" content="Idan Cordovi">
 <meta property="og:description" content="Cinematographer, producer, editor and colorist. Tel Aviv, Israel.">
-<meta property="og:image" content="{STILLS[HERO]}">
+<meta property="og:image" content="{SITE}{STILLS[HERO]}">
+<meta property="og:url" content="{SITE}">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="{SITE}">
+<meta name="theme-color" content="#121216">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -277,9 +285,10 @@ HTML = f"""<!doctype html>
 <div><dt>Editor</dt><dd>Michael Anug</dd></div>
 <div><dt>Post-production director</dt><dd>Rotem Gross</dd></div>
 </dl></div>
+<div class="carousel"><div class="cbar"><span class="count">{len(STILLS) - 1} stills</span><span class="cbtns"><button type="button" class="prev" aria-label="Previous stills">&larr;</button><button type="button" class="next" aria-label="Next stills">&rarr;</button></span></div>
 <div class="reel" tabindex="0" aria-label="Stills from Who Cares?, scroll sideways">
 {stills}
-</div>
+</div></div>
 </div></section>
 
 <section id="safe-school"><div class="wrap">
@@ -297,12 +306,12 @@ HTML = f"""<!doctype html>
 
 <section id="formats"><div class="wrap">
 <div class="head"><span class="eyebrow">Interview format</span><h2>The Sofa</h2></div>
-{grid(FORMATS, "two")}
+{carousel(FORMATS, "The Sofa")}
 </div></section>
 
 <section id="films"><div class="wrap">
 <div class="head"><span class="eyebrow">Short films and music</span><h2>Films</h2></div>
-{grid(FILMS)}
+{carousel(FILMS, "Films")}
 </div></section>
 </div>
 </main>
