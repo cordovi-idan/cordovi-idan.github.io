@@ -38,8 +38,8 @@ SSA = [
 ]
 COMMERCIALS = [
  yt("SheCodes", "b63lotRY0d8", "Commercial · Producer"),
- vm("Sibus: Introduction", 966651464, "", "Social media commercial · Producer"),
- vm("Sibus: People", 966651911, "", "Social media commercial · Producer"),
+ dict(vm("Sibus: Introduction", 966651464, "", "Social media commercial · Producer"), tall=True),
+ dict(vm("Sibus: People", 966651911, "", "Social media commercial · Producer"), tall=True),
  ig("Mazda: X on the Car", "C4ahVAUo0qn", "images/thumbs/mazda-1.jpg", "With Lior Suchard · Instagram reel · Producer"),
 ]
 CORPORATE = [
@@ -67,7 +67,7 @@ def card(p):
     if src.startswith("images/"):  # version local files so browsers fetch updated images
         import os; src += f"?v={int(os.path.getmtime(os.path.join(os.path.dirname(__file__) or '.', src)))}"
     img = f'<img src="{e(src)}" alt="" loading="lazy">' if p["thumb"] else ""
-    data = f' data-embed="{e(p["embed"])}" data-title="{e(p["t"])}" data-host="{p["host"]}"' if p["embed"] else ""
+    data = f' data-embed="{e(p["embed"])}" data-title="{e(p["t"])}" data-host="{p["host"]}"' + (' data-tall="1"' if p.get("tall") or p["host"] == "Instagram" else "") if p["embed"] else ""
     note = f'<span class="note">{e(p["note"])}</span>' if p["note"] else ""
     return f'''<a class="card" href="{e(p["url"])}" target="_blank" rel="noopener"{data}>
 <span class="frame">{img}<span class="play" aria-hidden="true"></span></span>
@@ -178,7 +178,8 @@ dialog::backdrop{background:rgb(8 8 10 / .92)}
 .dactions button:focus-visible{outline:2px solid var(--finder)}
 .player{aspect-ratio:16/9;max-width:100%;background:#000}
 .player iframe{display:block;width:100%;height:100%;border:0}
-.player.tall{aspect-ratio:auto;width:min(100%,420px);height:min(78vh,760px);margin-inline:auto;background:#fff}
+.player.tall{aspect-ratio:auto;width:min(100%,calc(78vh * 9 / 16));height:min(78vh,760px);margin-inline:auto}
+.player.tall.ig{width:min(100%,420px);background:#fff}
 .fallback{position:relative;display:block;width:100%;height:100%;color:var(--paper)}
 .fallback img{display:block;width:100%;height:100%;object-fit:cover;opacity:.55}
 .fallback span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:14px 22px;background:var(--finder);color:var(--ink);font:600 17px/1 var(--body);white-space:nowrap}
@@ -194,7 +195,7 @@ document.querySelectorAll('.card[data-embed]').forEach(c=>c.addEventListener('cl
   if(ev.metaKey||ev.ctrlKey||ev.shiftKey)return;ev.preventDefault();
   t.textContent=c.dataset.title;ext.href=c.href;ext.textContent='Open on '+c.dataset.host;
   const f=document.createElement('iframe');f.src=c.dataset.embed;f.title=c.dataset.title;f.allow='autoplay; fullscreen; picture-in-picture';f.allowFullscreen=true;
-  box.classList.toggle('tall',c.dataset.host==='Instagram');
+  box.classList.toggle('tall',!!c.dataset.tall);box.classList.toggle('ig',c.dataset.host==='Instagram');
   box.replaceChildren(f);d.showModal();
 }));
 d.querySelector('button').addEventListener('click',()=>d.close());

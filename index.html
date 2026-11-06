@@ -111,7 +111,8 @@ dialog::backdrop{background:rgb(8 8 10 / .92)}
 .dactions button:focus-visible{outline:2px solid var(--finder)}
 .player{aspect-ratio:16/9;max-width:100%;background:#000}
 .player iframe{display:block;width:100%;height:100%;border:0}
-.player.tall{aspect-ratio:auto;width:min(100%,420px);height:min(78vh,760px);margin-inline:auto;background:#fff}
+.player.tall{aspect-ratio:auto;width:min(100%,calc(78vh * 9 / 16));height:min(78vh,760px);margin-inline:auto}
+.player.tall.ig{width:min(100%,420px);background:#fff}
 .fallback{position:relative;display:block;width:100%;height:100%;color:var(--paper)}
 .fallback img{display:block;width:100%;height:100%;object-fit:cover;opacity:.55}
 .fallback span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:14px 22px;background:var(--finder);color:var(--ink);font:600 17px/1 var(--body);white-space:nowrap}
@@ -219,13 +220,13 @@ dialog::backdrop{background:rgb(8 8 10 / .92)}
 <div class="carousel"><div class="cbar"><span class="count">4 videos</span><span class="cbtns"><button type="button" class="prev" aria-label="Previous videos in Commercials">&larr;</button><button type="button" class="next" aria-label="Next videos in Commercials">&rarr;</button></span></div><div class="track" tabindex="0" aria-label="Commercials, scroll sideways"><a class="card" href="https://www.youtube.com/watch?v=b63lotRY0d8" target="_blank" rel="noopener" data-embed="https://www.youtube-nocookie.com/embed/b63lotRY0d8?autoplay=1" data-title="SheCodes" data-host="YouTube">
 <span class="frame"><img src="images/thumbs/b63lotRY0d8.jpg?v=1793997189" alt="" loading="lazy"><span class="play" aria-hidden="true"></span></span>
 <span class="cap"><span class="ttl">SheCodes</span><span class="note">Commercial · Producer</span></span></a>
-<a class="card" href="https://vimeo.com/966651464" target="_blank" rel="noopener" data-embed="https://player.vimeo.com/video/966651464?title=0&amp;byline=0&amp;portrait=0&amp;autoplay=1" data-title="Sibus: Introduction" data-host="Vimeo">
-<span class="frame"><img src="images/thumbs/966651464.jpg?v=1793997189" alt="" loading="lazy"><span class="play" aria-hidden="true"></span></span>
+<a class="card" href="https://vimeo.com/966651464" target="_blank" rel="noopener" data-embed="https://player.vimeo.com/video/966651464?title=0&amp;byline=0&amp;portrait=0&amp;autoplay=1" data-title="Sibus: Introduction" data-host="Vimeo" data-tall="1">
+<span class="frame"><img src="images/thumbs/966651464.jpg?v=1794000973" alt="" loading="lazy"><span class="play" aria-hidden="true"></span></span>
 <span class="cap"><span class="ttl">Sibus: Introduction</span><span class="note">Social media commercial · Producer</span></span></a>
-<a class="card" href="https://vimeo.com/966651911" target="_blank" rel="noopener" data-embed="https://player.vimeo.com/video/966651911?title=0&amp;byline=0&amp;portrait=0&amp;autoplay=1" data-title="Sibus: People" data-host="Vimeo">
-<span class="frame"><img src="images/thumbs/966651911.jpg?v=1793997189" alt="" loading="lazy"><span class="play" aria-hidden="true"></span></span>
+<a class="card" href="https://vimeo.com/966651911" target="_blank" rel="noopener" data-embed="https://player.vimeo.com/video/966651911?title=0&amp;byline=0&amp;portrait=0&amp;autoplay=1" data-title="Sibus: People" data-host="Vimeo" data-tall="1">
+<span class="frame"><img src="images/thumbs/966651911.jpg?v=1794000973" alt="" loading="lazy"><span class="play" aria-hidden="true"></span></span>
 <span class="cap"><span class="ttl">Sibus: People</span><span class="note">Social media commercial · Producer</span></span></a>
-<a class="card" href="https://www.instagram.com/reel/C4ahVAUo0qn/" target="_blank" rel="noopener" data-embed="https://www.instagram.com/reel/C4ahVAUo0qn/embed/" data-title="Mazda: X on the Car" data-host="Instagram">
+<a class="card" href="https://www.instagram.com/reel/C4ahVAUo0qn/" target="_blank" rel="noopener" data-embed="https://www.instagram.com/reel/C4ahVAUo0qn/embed/" data-title="Mazda: X on the Car" data-host="Instagram" data-tall="1">
 <span class="frame"><img src="images/thumbs/mazda-1.jpg?v=1794000218" alt="" loading="lazy"><span class="play" aria-hidden="true"></span></span>
 <span class="cap"><span class="ttl">Mazda: X on the Car</span><span class="note">With Lior Suchard · Instagram reel · Producer</span></span></a></div></div>
 <h3>Corporate and organizations</h3>
@@ -290,7 +291,7 @@ document.querySelectorAll('.card[data-embed]').forEach(c=>c.addEventListener('cl
   if(ev.metaKey||ev.ctrlKey||ev.shiftKey)return;ev.preventDefault();
   t.textContent=c.dataset.title;ext.href=c.href;ext.textContent='Open on '+c.dataset.host;
   const f=document.createElement('iframe');f.src=c.dataset.embed;f.title=c.dataset.title;f.allow='autoplay; fullscreen; picture-in-picture';f.allowFullscreen=true;
-  box.classList.toggle('tall',c.dataset.host==='Instagram');
+  box.classList.toggle('tall',!!c.dataset.tall);box.classList.toggle('ig',c.dataset.host==='Instagram');
   box.replaceChildren(f);d.showModal();
 }));
 d.querySelector('button').addEventListener('click',()=>d.close());
