@@ -4,6 +4,7 @@ from html import escape as e
 STILLS = [f"images/still-{i:02d}.jpg" for i in range(1, 20)]  # files in images/, shown in this order
 HERO = 0
 SITE = "https://cordovi-idan.github.io/"
+KADMON = [f"images/kadmon/kadmon-{i:02d}.jpg" for i in range(1, 9)]  # frames from the Kadmon social shoot
 HERO_SLIDES = [0, 1, 3, 7, 13, 17, 6]  # indexes into STILLS, shown in the top frame in this order
 V = "https://i.vimeocdn.com/video/%s-d_640"
 def vm(title, vid, thumb, note=""):
@@ -180,6 +181,14 @@ dialog::backdrop{background:rgb(8 8 10 / .92)}
 .dactions button:focus-visible{outline:2px solid var(--finder)}
 .player{aspect-ratio:16/9;max-width:100%;background:#000}
 .player iframe{display:block;width:100%;height:100%;border:0}
+.vreel{gap:12px}
+.vframe{flex:0 0 calc((100% - 36px) / 4.3);padding:0;border:0;background:var(--panel);cursor:zoom-in;scroll-snap-align:start;position:relative}
+.vframe img{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:cover;transition:transform .35s ease}
+.vframe:hover img{transform:scale(1.02)}
+.player.still{aspect-ratio:auto;width:min(100%,calc(82vh * 9 / 16));height:auto;margin-inline:auto}
+.player.still img{display:block;width:100%;height:auto}
+@media (max-width:860px){.vframe{flex-basis:calc((100% - 24px) / 2.6)}}
+@media (max-width:520px){.vframe{flex-basis:62%}}
 .player.tall{aspect-ratio:auto;width:min(100%,calc(78vh * 9 / 16));height:min(78vh,760px);margin-inline:auto}
 .player.tall.ig{width:min(100%,420px);background:#fff}
 .fallback{position:relative;display:block;width:100%;height:100%;color:var(--paper)}
@@ -195,7 +204,7 @@ JS = r"""
 const d=document.getElementById('player'),box=d.querySelector('.player'),t=d.querySelector('strong'),ext=d.querySelector('a');
 document.querySelectorAll('.card[data-embed]').forEach(c=>c.addEventListener('click',ev=>{
   if(ev.metaKey||ev.ctrlKey||ev.shiftKey)return;ev.preventDefault();
-  t.textContent=c.dataset.title;ext.href=c.href;ext.textContent='Open on '+c.dataset.host;
+  t.textContent=c.dataset.title;ext.hidden=false;box.classList.remove('still');ext.href=c.href;ext.textContent='Open on '+c.dataset.host;
   const f=document.createElement('iframe');f.src=c.dataset.embed;f.title=c.dataset.title;f.allow='autoplay; fullscreen; picture-in-picture';f.allowFullscreen=true;
   box.classList.toggle('tall',!!c.dataset.tall);box.classList.toggle('ig',c.dataset.host==='Instagram');
   box.replaceChildren(f);d.showModal();
@@ -227,6 +236,9 @@ document.querySelectorAll('.carousel').forEach(c=>{
   const play=()=>{clearInterval(timer);if(still){h.classList.add('paused');return}timer=setInterval(()=>go(i+1),6000)};
   tk.forEach((b,k)=>b.addEventListener('click',()=>{go(k);play()}));
   document.addEventListener('visibilitychange',()=>document.hidden?clearInterval(timer):play());play();})();
+document.querySelectorAll('.vframe').forEach(b=>b.addEventListener('click',()=>{
+  const i=new Image();i.src=b.querySelector('img').src;i.alt=b.querySelector('img').alt;
+  t.textContent='Kadmon';ext.hidden=true;box.classList.remove('tall','ig');box.classList.add('still');box.replaceChildren(i);d.showModal()}));
 const copy=document.getElementById('copy');
 copy.addEventListener('click',async()=>{try{await navigator.clipboard.writeText('cordovi.idan@gmail.com');copy.textContent='Email copied'}catch(_){copy.textContent='cordovi.idan@gmail.com'}});
 """
@@ -274,6 +286,14 @@ HTML = f"""<!doctype html>
 <section id="all-in"><div class="wrap">
 <div class="head"><span class="eyebrow">Podcasts and live sessions · Camera, edit &amp; color</span><h2>All in Podcasts</h2></div>
 {carousel([ALLIN_LIVE[0], ALLIN_PODCAST[0]] + ALLIN_LIVE[1:], "All in Podcasts")}
+</div></section>
+
+<section id="kadmon"><div class="wrap">
+<div class="head"><span class="eyebrow">Social content · Cinematography &amp; color</span><h2>Kadmon</h2></div>
+<div class="carousel"><div class="cbar"><span class="cbtns"><button type="button" class="prev" aria-label="Previous frames">&larr;</button><button type="button" class="next" aria-label="Next frames">&rarr;</button></span></div>
+<div class="reel vreel" tabindex="0" aria-label="Frames from the Kadmon shoot, scroll sideways">
+{"".join(f'<button type="button" class="vframe" aria-label="Enlarge frame {n + 1}"><img src="{k}" alt="Frame {n + 1} from the Kadmon shoot" width="810" height="1440" loading="lazy"></button>' for n, k in enumerate(KADMON))}
+</div></div>
 </div></section>
 
 <section id="who-cares"><div class="wrap">

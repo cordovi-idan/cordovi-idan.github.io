@@ -118,6 +118,14 @@ dialog::backdrop{background:rgb(8 8 10 / .92)}
 .dactions button:focus-visible{outline:2px solid var(--finder)}
 .player{aspect-ratio:16/9;max-width:100%;background:#000}
 .player iframe{display:block;width:100%;height:100%;border:0}
+.vreel{gap:12px}
+.vframe{flex:0 0 calc((100% - 36px) / 4.3);padding:0;border:0;background:var(--panel);cursor:zoom-in;scroll-snap-align:start;position:relative}
+.vframe img{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:cover;transition:transform .35s ease}
+.vframe:hover img{transform:scale(1.02)}
+.player.still{aspect-ratio:auto;width:min(100%,calc(82vh * 9 / 16));height:auto;margin-inline:auto}
+.player.still img{display:block;width:100%;height:auto}
+@media (max-width:860px){.vframe{flex-basis:calc((100% - 24px) / 2.6)}}
+@media (max-width:520px){.vframe{flex-basis:62%}}
 .player.tall{aspect-ratio:auto;width:min(100%,calc(78vh * 9 / 16));height:min(78vh,760px);margin-inline:auto}
 .player.tall.ig{width:min(100%,420px);background:#fff}
 .fallback{position:relative;display:block;width:100%;height:100%;color:var(--paper)}
@@ -163,6 +171,14 @@ dialog::backdrop{background:rgb(8 8 10 / .92)}
 <a class="card" href="https://www.youtube.com/watch?v=d3_nm4BfE9U" target="_blank" rel="noopener" data-embed="https://www.youtube-nocookie.com/embed/d3_nm4BfE9U?autoplay=1" data-title="Liam Hachmon" data-host="YouTube">
 <span class="frame"><img src="images/thumbs/live-4.jpg?v=1793998814" alt="" loading="lazy"><span class="play" aria-hidden="true"></span></span>
 <span class="cap"><span class="ttl">Liam Hachmon</span><span class="note">Live session · The Session with Dean Elbaz</span></span></a></div></div>
+</div></section>
+
+<section id="kadmon"><div class="wrap">
+<div class="head"><span class="eyebrow">Social content · Cinematography &amp; color</span><h2>Kadmon</h2></div>
+<div class="carousel"><div class="cbar"><span class="cbtns"><button type="button" class="prev" aria-label="Previous frames">&larr;</button><button type="button" class="next" aria-label="Next frames">&rarr;</button></span></div>
+<div class="reel vreel" tabindex="0" aria-label="Frames from the Kadmon shoot, scroll sideways">
+<button type="button" class="vframe" aria-label="Enlarge frame 1"><img src="images/kadmon/kadmon-01.jpg" alt="Frame 1 from the Kadmon shoot" width="810" height="1440" loading="lazy"></button><button type="button" class="vframe" aria-label="Enlarge frame 2"><img src="images/kadmon/kadmon-02.jpg" alt="Frame 2 from the Kadmon shoot" width="810" height="1440" loading="lazy"></button><button type="button" class="vframe" aria-label="Enlarge frame 3"><img src="images/kadmon/kadmon-03.jpg" alt="Frame 3 from the Kadmon shoot" width="810" height="1440" loading="lazy"></button><button type="button" class="vframe" aria-label="Enlarge frame 4"><img src="images/kadmon/kadmon-04.jpg" alt="Frame 4 from the Kadmon shoot" width="810" height="1440" loading="lazy"></button><button type="button" class="vframe" aria-label="Enlarge frame 5"><img src="images/kadmon/kadmon-05.jpg" alt="Frame 5 from the Kadmon shoot" width="810" height="1440" loading="lazy"></button><button type="button" class="vframe" aria-label="Enlarge frame 6"><img src="images/kadmon/kadmon-06.jpg" alt="Frame 6 from the Kadmon shoot" width="810" height="1440" loading="lazy"></button><button type="button" class="vframe" aria-label="Enlarge frame 7"><img src="images/kadmon/kadmon-07.jpg" alt="Frame 7 from the Kadmon shoot" width="810" height="1440" loading="lazy"></button><button type="button" class="vframe" aria-label="Enlarge frame 8"><img src="images/kadmon/kadmon-08.jpg" alt="Frame 8 from the Kadmon shoot" width="810" height="1440" loading="lazy"></button>
+</div></div>
 </div></section>
 
 <section id="who-cares"><div class="wrap">
@@ -297,7 +313,7 @@ dialog::backdrop{background:rgb(8 8 10 / .92)}
 const d=document.getElementById('player'),box=d.querySelector('.player'),t=d.querySelector('strong'),ext=d.querySelector('a');
 document.querySelectorAll('.card[data-embed]').forEach(c=>c.addEventListener('click',ev=>{
   if(ev.metaKey||ev.ctrlKey||ev.shiftKey)return;ev.preventDefault();
-  t.textContent=c.dataset.title;ext.href=c.href;ext.textContent='Open on '+c.dataset.host;
+  t.textContent=c.dataset.title;ext.hidden=false;box.classList.remove('still');ext.href=c.href;ext.textContent='Open on '+c.dataset.host;
   const f=document.createElement('iframe');f.src=c.dataset.embed;f.title=c.dataset.title;f.allow='autoplay; fullscreen; picture-in-picture';f.allowFullscreen=true;
   box.classList.toggle('tall',!!c.dataset.tall);box.classList.toggle('ig',c.dataset.host==='Instagram');
   box.replaceChildren(f);d.showModal();
@@ -329,6 +345,9 @@ document.querySelectorAll('.carousel').forEach(c=>{
   const play=()=>{clearInterval(timer);if(still){h.classList.add('paused');return}timer=setInterval(()=>go(i+1),6000)};
   tk.forEach((b,k)=>b.addEventListener('click',()=>{go(k);play()}));
   document.addEventListener('visibilitychange',()=>document.hidden?clearInterval(timer):play());play();})();
+document.querySelectorAll('.vframe').forEach(b=>b.addEventListener('click',()=>{
+  const i=new Image();i.src=b.querySelector('img').src;i.alt=b.querySelector('img').alt;
+  t.textContent='Kadmon';ext.hidden=true;box.classList.remove('tall','ig');box.classList.add('still');box.replaceChildren(i);d.showModal()}));
 const copy=document.getElementById('copy');
 copy.addEventListener('click',async()=>{try{await navigator.clipboard.writeText('cordovi.idan@gmail.com');copy.textContent='Email copied'}catch(_){copy.textContent='cordovi.idan@gmail.com'}});
 </script>
