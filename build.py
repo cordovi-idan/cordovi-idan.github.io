@@ -20,17 +20,14 @@ DOCU = [
  vm("EyeClick", 930606476, "1827414398-ec0f85348f29f4c68a397771759af8fc284ad18ca1b9a0245860e57e13df90b7", "Corporate video"),
  vm("V-ARMED", 966674304, "1956789599-500ae694eccf78318ba7ef4b429e6da54adfacf612ae63931a84a665fa3c1ca4", "Corporate video"),
  yt("Children of Dawn", "wqXiXFmjISc", "Daniel Dvir"),
- vm("Safe School Analytics", 966598070, "1879574579-32d91ac45e2422a72253e880a7bd917a34e8979c028157a80ea736881ef9b1fc", "Sales promo"),
 ]
 EDU = [
  vm("Making History", 1032761269, "1954146575-51a65e3681896e8acd420c64acbc122ef4a5a6681b6de593b3ab5ae7f0fc5203", "Ben Gurion"),
- vm("Safe Swimming in the Sea", 948757701, "1856636051-b41e0ab9058b0910bd571e97964f98d0ec44d88f3c2b15bcc49056b978330292", "Elad Zohar"),
  vm("Our Story", 1003485746, "1920056113-d0726781114893847fad15babff317ae824b7b0e58d03d1776c50861e09539a7", "Web series, social skills"),
  vm("At Eye Level with Rotem Sela", 856396361, "1713396605-46ee109137d52d5fc881e50617f2aa29cd3be12cb53f1bfa7e5176071cb8550f", "Bullying"),
  vm("Testimony from October 7th", 936250297, "1837810767-200484e493dd88e2ad2f82125145198d4865cdb062f8576e98ef0fc7e6f7f1eb", "Officer Eden Ram"),
  vm("Savings and Investments", 881594413, "1919074049-d09d80c283ccf4e3766244c3a96fba3deb8714f12d3ea149157233d53b2d1acd", "Shaul Amsterdamski"),
  vm("All the Way to the Top", 1027190091, "1956301717-6b2b1018ffbc8645e2a4e9fb815a1ee51509e5ca4268d0b3f56af0d69cb1a2d3", "Peter Paltchik"),
- vm("The Hebrew Language Day", 1037732781, "1959786713-01971a15018b153ac6cb50bae10aa98f6ce7a801975acf2c5fc83aca581ad5d8"),
 ]
 PROD = [
  vm("Sibus: Introduction", 966651464, "1881817738-899eb1577f24d51947fbcb32cefd5bbf63819a3a6004bbc4d761ef0660e521af", "Social media commercial"),
@@ -55,8 +52,9 @@ EDIT = [
  yt("Water Girl", "-eWBzLyVscw", "Edit and color · 02:51"),
 ]
 # Thumbnails are saved in images/thumbs (v00, v01, ... in page order, Instagram reels excluded)
-for i, p in enumerate(p for p in DOCU + EDU + PROD + EDIT if p["host"] != "Instagram"):
-    p["thumb"] = f"images/thumbs/v{i:02d}.jpg"
+for p in DOCU + EDU + PROD + EDIT:  # each video's thumbnail is images/thumbs/<video id>.jpg
+    if p["host"] != "Instagram":
+        p["thumb"] = f"images/thumbs/{p['url'].rstrip('/').split('v=')[-1].split('/')[-1]}.jpg"
 
 def card(p):
     src = p["thumb"]
