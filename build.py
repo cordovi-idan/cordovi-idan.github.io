@@ -59,7 +59,10 @@ for i, p in enumerate(p for p in DOCU + EDU + PROD + EDIT if p["host"] != "Insta
     p["thumb"] = f"images/thumbs/v{i:02d}.jpg"
 
 def card(p):
-    img = f'<img src="{e(p["thumb"])}" alt="" loading="lazy">' if p["thumb"] else ""
+    src = p["thumb"]
+    if src.startswith("images/"):  # version local files so browsers fetch updated images
+        import os; src += f"?v={int(os.path.getmtime(os.path.join(os.path.dirname(__file__) or '.', src)))}"
+    img = f'<img src="{e(src)}" alt="" loading="lazy">' if p["thumb"] else ""
     data = f' data-embed="{e(p["embed"])}" data-title="{e(p["t"])}" data-host="{p["host"]}"' if p["embed"] else ""
     note = f'<span class="note">{e(p["note"])}</span>' if p["note"] else ""
     return f'''<a class="card" href="{e(p["url"])}" target="_blank" rel="noopener"{data}>
