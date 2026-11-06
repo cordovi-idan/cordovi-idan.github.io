@@ -106,11 +106,13 @@ nav a:hover{color:var(--finder)}
 h1{margin:0;font:900 clamp(68px,17.2vw,232px)/.84 var(--display);letter-spacing:-.005em;text-transform:uppercase;text-wrap:balance}
 .roles{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 24px;margin:20px 0 28px;font:500 13px/1.6 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--finder)}
 .scope{position:relative;aspect-ratio:2.39/1;max-width:100%;background:var(--panel);overflow:hidden}
-.scope img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.02);transition:opacity 1.4s ease}
-.scope img.on{opacity:1;z-index:1;animation:drift 7.5s linear forwards}
-.scope img:nth-child(even).on{animation-name:drift2}
-@keyframes drift{from{transform:scale(1.02) translateX(0)}to{transform:scale(1.11) translateX(-1.6%)}}
-@keyframes drift2{from{transform:scale(1.11) translateX(-1.6%)}to{transform:scale(1.02) translateX(0)}}
+.scope img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.03);transition:opacity 1.8s cubic-bezier(.4,0,.2,1);will-change:opacity,transform;backface-visibility:hidden}
+.scope img:nth-child(odd){transform-origin:30% 50%}
+.scope img:nth-child(even){transform-origin:70% 50%}
+.scope img.on,.scope img.out{animation:drift 9s linear forwards}
+.scope img.on{opacity:1;z-index:2}
+.scope img.out{opacity:0;z-index:1}
+@keyframes drift{from{transform:scale(1.03)}to{transform:scale(1.12)}}
 .ticks{position:absolute;left:44px;right:44px;bottom:14px;z-index:3;display:flex;gap:6px;filter:drop-shadow(0 0 3px rgb(0 0 0 / .7))}
 .ticks button{flex:1;height:14px;padding:0;border:0;background:none;cursor:pointer;position:relative}
 .ticks button::before{content:"";position:absolute;left:0;right:0;top:6px;height:2px;background:rgb(241 238 230 / .35)}
@@ -215,7 +217,9 @@ document.querySelectorAll('.carousel').forEach(c=>{
 (()=>{const h=document.getElementById('hero-slides');if(!h)return;const im=[...h.querySelectorAll('img')],tk=[...h.querySelectorAll('.ticks button')];
   const still=matchMedia('(prefers-reduced-motion: reduce)').matches;let i=0,timer=null;
   im.forEach(x=>x.loading='eager');
-  const go=n=>{i=(n+im.length)%im.length;im.forEach((x,k)=>x.classList.toggle('on',k===i));tk.forEach((b,k)=>{b.classList.toggle('on',k===i);b.classList.toggle('done',k<i)});
+  const go=n=>{const prev=im[i];i=(n+im.length)%im.length;if(prev===im[i])return;
+    im.forEach(x=>x.classList.remove('out'));prev.classList.replace('on','out');      // outgoing keeps moving while it fades
+    const cur=im[i];cur.style.animation='none';cur.offsetWidth;cur.style.animation='';cur.classList.add('on');tk.forEach((b,k)=>{b.classList.toggle('on',k===i);b.classList.toggle('done',k<i)});
     tk[i].style.animation='none';tk[i].offsetWidth;tk[i].style.animation='';};
   const play=()=>{clearInterval(timer);if(still){h.classList.add('paused');return}timer=setInterval(()=>go(i+1),6000)};
   tk.forEach((b,k)=>b.addEventListener('click',()=>{go(k);play()}));
