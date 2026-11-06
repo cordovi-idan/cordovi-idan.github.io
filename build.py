@@ -45,6 +45,7 @@ LIVE = [
  yt("Yeremi Kaplan", "DRhnP965je8", "Live session"),
  yt("Jacko Eisenberg", "JXECIKLr3Go", "Live session"),
  yt("Alma Gov", "YZZeJq5Zj84", "Live session"),
+ yt("Liam Hachmon", "d3_nm4BfE9U", "Live session"),
 ]
 for i, p in enumerate(LIVE, 1):
     p["thumb"] = f"images/thumbs/live-{i}.jpg"
@@ -201,8 +202,8 @@ HTML = f"""<!doctype html>
 </div>
 
 <section id="sessions"><div class="wrap">
-<div class="head"><span class="eyebrow">All in Studios · Live music</span><h2>The Session with Dean Elbaz</h2></div>
-{grid(LIVE)}
+<div class="head"><span class="eyebrow">All in Studios · Camera, edit &amp; color</span><h2>The Session with Dean Elbaz</h2></div>
+{grid(LIVE, "two")}
 </div></section>
 
 <section id="cinematography"><div class="wrap">
