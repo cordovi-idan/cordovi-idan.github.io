@@ -310,8 +310,8 @@ HTML = f"""<!doctype html>
 </div></section>
 
 <section id="films"><div class="wrap">
-<div class="head"><span class="eyebrow">Short films and music</span><h2>Films</h2></div>
-{carousel(FILMS, "Films")}
+<div class="head"><span class="eyebrow">Selected shorts</span><h2>Short Films</h2></div>
+{carousel(FILMS, "Short Films")}
 </div></section>
 </div>
 </main>
