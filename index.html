@@ -49,6 +49,10 @@ section{padding-block:72px 0}
 h2{margin:0;font:800 clamp(40px,6.4vw,76px)/.95 var(--display);text-transform:uppercase;text-wrap:balance}
 h3{margin:44px 0 20px;font:700 clamp(26px,3.4vw,36px)/1.05 var(--display);text-transform:uppercase}
 .lede{margin:6px 0 0;color:var(--muted);max-width:65ch}
+.credits{display:flex;flex-wrap:wrap;gap:14px 36px;margin:14px 0 0;padding-top:16px;border-top:1px solid var(--line);max-width:100%}
+.credits div{display:grid;gap:3px;min-width:0}
+.credits dt{font:500 11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.credits dd{margin:0;font-weight:600;line-height:1.35}
 .reel{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:12px;scrollbar-color:var(--line) transparent}
 .reel img{flex:0 0 min(82vw,680px);width:min(82vw,680px);height:auto;aspect-ratio:2.39/1;object-fit:cover;scroll-snap-align:start;background:var(--panel)}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px 20px}
@@ -103,7 +107,7 @@ dialog::backdrop{background:rgb(8 8 10 / .92)}
 <div class="wrap hero">
 <h1>Idan Cordovi</h1>
 <div class="roles"><span>Cinematographer</span><span>Producer</span><span>Editor &amp; Color</span><span>Tel Aviv, Israel</span></div>
-<div class="scope"><img src="images/still-01.jpg" alt="Still from the documentary Who Cares" width="1600" height="670" fetchpriority="high"></div>
+<div class="scope"><img src="images/still-01.jpg" alt="Still from the documentary Who Cares?" width="1600" height="670" fetchpriority="high"></div>
 </div>
 
 <section id="sessions"><div class="wrap">
@@ -123,7 +127,14 @@ dialog::backdrop{background:rgb(8 8 10 / .92)}
 </div></section>
 
 <section id="cinematography"><div class="wrap">
-<div class="head"><span class="eyebrow">55 min documentary film · DP</span><h2>Who Cares</h2></div>
+<div class="head"><span class="eyebrow">55 min documentary · Cinematography</span><h2>Who Cares?</h2>
+<dl class="credits">
+<div><dt>Produced by</dt><dd>Duetch &amp; Co</dd></div>
+<div><dt>Directed by</dt><dd>Tamar Schwarz</dd></div>
+<div><dt>Cinematography</dt><dd>Tamar Schwarz &amp; Idan Cordovi</dd></div>
+<div><dt>Editor</dt><dd>Michael Anug</dd></div>
+<div><dt>Post-production director</dt><dd>Rotem Gross</dd></div>
+</dl></div>
 <div class="reel" tabindex="0" aria-label="Stills from Who Cares, scroll sideways">
 <img src="images/still-02.jpg" alt="Still 2" loading="lazy" width="1600" height="670">
 <img src="images/still-03.jpg" alt="Still 3" loading="lazy" width="1600" height="670">
