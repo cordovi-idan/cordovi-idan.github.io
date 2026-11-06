@@ -3,6 +3,7 @@
 from html import escape as e
 STILLS = [f"images/still-{i:02d}.jpg" for i in range(1, 20)]  # files in images/, shown in this order
 HERO = 0
+HERO_SLIDES = [0, 1, 3, 7, 13, 17, 6]  # indexes into STILLS, shown in the top frame in this order
 V = "https://i.vimeocdn.com/video/%s-d_640"
 def vm(title, vid, thumb, note=""):
     return dict(t=title, note=note, url=f"https://vimeo.com/{vid}", embed=f"https://player.vimeo.com/video/{vid}?title=0&byline=0&portrait=0&autoplay=1",
@@ -105,7 +106,19 @@ nav a:hover{color:var(--finder)}
 h1{margin:0;font:900 clamp(68px,17.2vw,232px)/.84 var(--display);letter-spacing:-.005em;text-transform:uppercase;text-wrap:balance}
 .roles{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 24px;margin:20px 0 28px;font:500 13px/1.6 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--finder)}
 .scope{position:relative;aspect-ratio:2.39/1;max-width:100%;background:var(--panel);overflow:hidden}
-.scope img{display:block;width:100%;height:100%;object-fit:cover}
+.scope img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.02);transition:opacity 1.4s ease}
+.scope img.on{opacity:1;z-index:1;animation:drift 7.5s linear forwards}
+.scope img:nth-child(even).on{animation-name:drift2}
+@keyframes drift{from{transform:scale(1.02) translateX(0)}to{transform:scale(1.11) translateX(-1.6%)}}
+@keyframes drift2{from{transform:scale(1.11) translateX(-1.6%)}to{transform:scale(1.02) translateX(0)}}
+.ticks{position:absolute;left:44px;right:44px;bottom:14px;z-index:3;display:flex;gap:6px;filter:drop-shadow(0 0 3px rgb(0 0 0 / .7))}
+.ticks button{flex:1;height:14px;padding:0;border:0;background:none;cursor:pointer;position:relative}
+.ticks button::before{content:"";position:absolute;left:0;right:0;top:6px;height:2px;background:rgb(241 238 230 / .35)}
+.ticks button::after{content:"";position:absolute;left:0;top:6px;height:2px;width:0;background:var(--finder)}
+.ticks button.done::after{width:100%}
+.ticks button.on::after{animation:fill 6s linear forwards}
+@keyframes fill{to{width:100%}}
+.scope.paused .ticks button.on::after{animation:none;width:100%}
 .scope::before,.scope::after,.frame::before,.frame::after{content:"";position:absolute;width:22px;height:22px;z-index:2;pointer-events:none;border:2px solid var(--finder)}
 .scope::before,.frame::before{left:10px;top:10px;border-right:0;border-bottom:0}
 .scope::after,.frame::after{right:10px;bottom:10px;border-left:0;border-top:0}
@@ -170,7 +183,7 @@ dialog::backdrop{background:rgb(8 8 10 / .92)}
 .fallback:hover span{background:var(--paper)}
 @media (max-width:860px){.grid,.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.track{grid-auto-columns:calc((100% - 20px) / 2.2)}}
 @media (max-width:520px){.track{grid-auto-columns:82%;gap:14px}.grid,.grid.two{grid-template-columns:minmax(0,1fr)}section{padding-block:56px 0}.roles{display:grid}}
-@media (prefers-reduced-motion:reduce){html,.track{scroll-behavior:auto}.frame img,.frame::before,.frame::after{transition:none}.card:hover img{transform:none}}
+@media (prefers-reduced-motion:reduce){html,.track{scroll-behavior:auto}.scope img,.scope img.on{animation:none;transition:none;transform:none}.frame img,.frame::before,.frame::after{transition:none}.card:hover img{transform:none}}
 """
 
 JS = r"""
@@ -199,6 +212,14 @@ document.querySelectorAll('.carousel').forEach(c=>{
   pv.addEventListener('click',()=>t.scrollBy({left:-step()}));nx.addEventListener('click',()=>t.scrollBy({left:step()}));
   t.addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);upd();
 });
+(()=>{const h=document.getElementById('hero-slides');if(!h)return;const im=[...h.querySelectorAll('img')],tk=[...h.querySelectorAll('.ticks button')];
+  const still=matchMedia('(prefers-reduced-motion: reduce)').matches;let i=0,timer=null;
+  im.forEach(x=>x.loading='eager');
+  const go=n=>{i=(n+im.length)%im.length;im.forEach((x,k)=>x.classList.toggle('on',k===i));tk.forEach((b,k)=>{b.classList.toggle('on',k===i);b.classList.toggle('done',k<i)});
+    tk[i].style.animation='none';tk[i].offsetWidth;tk[i].style.animation='';};
+  const play=()=>{clearInterval(timer);if(still){h.classList.add('paused');return}timer=setInterval(()=>go(i+1),6000)};
+  tk.forEach((b,k)=>b.addEventListener('click',()=>{go(k);play()}));
+  document.addEventListener('visibilitychange',()=>document.hidden?clearInterval(timer):play());play();})();
 const copy=document.getElementById('copy');
 copy.addEventListener('click',async()=>{try{await navigator.clipboard.writeText('cordovi.idan@gmail.com');copy.textContent='Email copied'}catch(_){copy.textContent='cordovi.idan@gmail.com'}});
 """
@@ -230,13 +251,16 @@ HTML = f"""<!doctype html>
 <div class="wrap hero">
 <h1>Idan Cordovi</h1>
 <div class="roles"><span>Cinematographer</span><span>Producer</span><span>Editor &amp; Color</span><span>Tel Aviv, Israel</span></div>
-<div class="scope"><img src="{STILLS[HERO]}" alt="Still from the documentary Who Cares?" width="1600" height="670" fetchpriority="high"></div>
+<div class="scope" id="hero-slides" aria-roledescription="slideshow" aria-label="Stills">
+{"".join(f'<img src="{STILLS[k]}" alt="" width="1600" height="670"{" class=\"on\" fetchpriority=\"high\"" if n == 0 else " loading=\"lazy\""}>' for n, k in enumerate(HERO_SLIDES))}
+<div class="ticks">{"".join(f'<button type="button" aria-label="Show still {n + 1}"{" class=\"on\"" if n == 0 else ""}></button>' for n in range(len(HERO_SLIDES)))}</div>
+</div>
 </div>
 
 <div id="works">
 <section id="all-in"><div class="wrap">
-<div class="head"><span class="eyebrow">Live music sessions and podcasts · Camera, edit &amp; color</span><h2>All in Studios</h2></div>
-{carousel(ALLIN_LIVE + ALLIN_PODCAST, "All in Studios")}
+<div class="head"><span class="eyebrow">Podcasts and live sessions · Camera, edit &amp; color</span><h2>All in Podcasts</h2></div>
+{carousel([ALLIN_LIVE[0], ALLIN_PODCAST[0]] + ALLIN_LIVE[1:], "All in Podcasts")}
 </div></section>
 
 <section id="who-cares"><div class="wrap">
