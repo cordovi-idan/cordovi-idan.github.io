@@ -41,6 +41,13 @@ PROD = [
  ig("Mazda with Lior Suchard", "C4ahVAUo0qn", "images/thumbs/mazda-1.jpg", "Commercial · Instagram reel"),
  ig("Mazda with Lior Suchard", "C3XbanLISH4", "images/thumbs/mazda-2.jpg", "Second commercial · Instagram reel"),
 ]
+LIVE = [
+ yt("Yeremi Kaplan", "DRhnP965je8", "Live session"),
+ yt("Jacko Eisenberg", "JXECIKLr3Go", "Live session"),
+ yt("Alma Gov", "YZZeJq5Zj84", "Live session"),
+]
+for i, p in enumerate(LIVE, 1):
+    p["thumb"] = f"images/thumbs/live-{i}.jpg"
 EDIT = [
  yt("Welcome To The Show Biz", "g35L0fLWzKg", "Short film · Editor · 2026"),
  vm("Our Story: Green and Red Lights in a Relationship", 1031027561, "1957595155-bbc77146afc16bd550d15530c73a9cdf2688e6c10074d3c82125c5bb34bde294", "Edit and color · 05:52"),
@@ -184,7 +191,7 @@ HTML = f"""<!doctype html>
 <header><div class="wrap bar">
 <a class="brand" href="#top">Idan Cordovi</a>
 <nav aria-label="Main">
-<a href="#cinematography">Cinematography</a><a href="#producing">Producing</a><a href="#edit">Edit &amp; Color</a><a href="#contact">Contact</a>
+<a href="#sessions">Live Sessions</a><a href="#cinematography">Cinematography</a><a href="#producing">Producing</a><a href="#edit">Edit &amp; Color</a><a href="#contact">Contact</a>
 </nav></div></header>
 <main id="top">
 <div class="wrap hero">
@@ -192,6 +199,11 @@ HTML = f"""<!doctype html>
 <div class="roles"><span>Cinematographer</span><span>Producer</span><span>Editor &amp; Color</span><span>Tel Aviv, Israel</span></div>
 <div class="scope"><img src="{STILLS[HERO]}" alt="Still from the documentary Who Cares" width="1600" height="670" fetchpriority="high"></div>
 </div>
+
+<section id="sessions"><div class="wrap">
+<div class="head"><span class="eyebrow">All in Studios · Live music</span><h2>The Session with Dean Elbaz</h2></div>
+{grid(LIVE)}
+</div></section>
 
 <section id="cinematography"><div class="wrap">
 <div class="head"><span class="eyebrow">55 min documentary film · DP</span><h2>Who Cares</h2></div>
