@@ -16,15 +16,15 @@ def ig(title, code, thumb, note=""):
 
 # Works are grouped by client or type of production. Each note says what Idan did.
 ALLIN_LIVE = [
- yt("Yeremi Kaplan", "DRhnP965je8", "Live session"),
- yt("Jacko Eisenberg", "JXECIKLr3Go", "Live session"),
- yt("Alma Gov", "YZZeJq5Zj84", "Live session"),
- yt("Liam Hachmon", "d3_nm4BfE9U", "Live session"),
+ yt("Yeremi Kaplan", "DRhnP965je8", "Live session · The Session with Dean Elbaz"),
+ yt("Jacko Eisenberg", "JXECIKLr3Go", "Live session · The Session with Dean Elbaz"),
+ yt("Alma Gov", "YZZeJq5Zj84", "Live session · The Session with Dean Elbaz"),
+ yt("Liam Hachmon", "d3_nm4BfE9U", "Live session · The Session with Dean Elbaz"),
 ]
 for i, p in enumerate(ALLIN_LIVE, 1):
     p["thumb"] = f"images/thumbs/live-{i}.jpg"   # studio photos with the shared film grade
 ALLIN_PODCAST = [
- yt("Yehonatan Margi", "tZ7jlnNBLqw", "“My home became a question”"),
+ yt("Yehonatan Margi", "tZ7jlnNBLqw", "Podcast · The Itay Segal Podcast"),
 ]
 SSA = [
  vm("Making History", 1032761269, "", "Ben Gurion · Cinematography"),
@@ -39,8 +39,7 @@ COMMERCIALS = [
  yt("SheCodes", "b63lotRY0d8", "Commercial · Producer"),
  vm("Sibus: Introduction", 966651464, "", "Social media commercial · Producer"),
  vm("Sibus: People", 966651911, "", "Social media commercial · Producer"),
- ig("Mazda with Lior Suchard", "C4ahVAUo0qn", "images/thumbs/mazda-1.jpg", "Instagram reel · Producer"),
- ig("Mazda with Lior Suchard", "C3XbanLISH4", "images/thumbs/mazda-2.jpg", "Second Instagram reel · Producer"),
+ ig("Mazda: X on the Car", "C4ahVAUo0qn", "images/thumbs/mazda-1.jpg", "With Lior Suchard · Instagram reel · Producer"),
 ]
 CORPORATE = [
  vm("Foodish Exhibition", 1033131649, "", "Exhibition promo · Cinematography"),
@@ -73,6 +72,11 @@ def card(p):
 <span class="frame">{img}<span class="play" aria-hidden="true"></span></span>
 <span class="cap"><span class="ttl">{e(p["t"])}</span>{note}</span></a>'''
 def grid(items, cls=""): return f'<div class="grid {cls}">' + "\n".join(card(p) for p in items) + "</div>"
+def carousel(items, label):
+    return (f'<div class="carousel"><div class="cbar"><span class="count">{len(items)} videos</span>'
+            f'<span class="cbtns"><button type="button" class="prev" aria-label="Previous videos in {e(label)}">&larr;</button>'
+            f'<button type="button" class="next" aria-label="Next videos in {e(label)}">&rarr;</button></span></div>'
+            f'<div class="track" tabindex="0" aria-label="{e(label)}, scroll sideways">' + "\n".join(card(p) for p in items) + "</div></div>")
 stills = "\n".join(f'<img src="{h}" alt="Still {i+1}" loading="lazy" width="1600" height="670">' for i, h in enumerate(STILLS) if i != HERO)
 
 CSS = r"""
@@ -119,7 +123,17 @@ h3{margin:44px 0 20px;font:700 clamp(26px,3.4vw,36px)/1.05 var(--display);text-t
 .reel img{flex:0 0 min(82vw,680px);width:min(82vw,680px);height:auto;aspect-ratio:2.39/1;object-fit:cover;scroll-snap-align:start;background:var(--panel)}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px 20px}
 .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
-.card{display:grid;gap:10px;text-decoration:none;min-width:0}
+.card{display:grid;gap:10px;align-content:start;text-decoration:none;min-width:0}
+.carousel{display:grid;gap:12px;min-width:0}
+.cbar{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.count{font:500 12px/1.5 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.cbtns{display:flex;gap:8px}
+.cbtns button{width:44px;height:44px;border:1px solid var(--line);background:none;color:var(--paper);font:400 20px/1 var(--body);cursor:pointer}
+.cbtns button:hover:not(:disabled){border-color:var(--finder);color:var(--finder)}
+.cbtns button:disabled{opacity:.3;cursor:default}
+.track{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 40px) / 3.15);gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior-x:contain;padding-bottom:6px;scrollbar-width:none}
+.track::-webkit-scrollbar{display:none}
+.track>.card{scroll-snap-align:start}
 .frame{position:relative;display:block;aspect-ratio:16/9;max-width:100%;background:var(--panel);overflow:hidden}
 .frame::before,.frame::after{opacity:0;transition:opacity .18s}
 .card:hover .frame::before,.card:hover .frame::after,.card:focus-visible .frame::before,.card:focus-visible .frame::after{opacity:1}
@@ -154,9 +168,9 @@ dialog::backdrop{background:rgb(8 8 10 / .92)}
 .fallback img{display:block;width:100%;height:100%;object-fit:cover;opacity:.55}
 .fallback span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:14px 22px;background:var(--finder);color:var(--ink);font:600 17px/1 var(--body);white-space:nowrap}
 .fallback:hover span{background:var(--paper)}
-@media (max-width:860px){.grid,.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:520px){.grid,.grid.two{grid-template-columns:minmax(0,1fr)}section{padding-block:56px 0}.roles{display:grid}}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.frame img,.frame::before,.frame::after{transition:none}.card:hover img{transform:none}}
+@media (max-width:860px){.grid,.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.track{grid-auto-columns:calc((100% - 20px) / 2.2)}}
+@media (max-width:520px){.track{grid-auto-columns:82%;gap:14px}.grid,.grid.two{grid-template-columns:minmax(0,1fr)}section{padding-block:56px 0}.roles{display:grid}}
+@media (prefers-reduced-motion:reduce){html,.track{scroll-behavior:auto}.frame img,.frame::before,.frame::after{transition:none}.card:hover img{transform:none}}
 """
 
 JS = r"""
@@ -178,6 +192,13 @@ const fallback=()=>{if(!cur||!d.open)return;box.classList.remove('tall');const a
   const s=document.createElement('span');s.textContent='Watch on '+cur.dataset.host;a.append(s);box.replaceChildren(a)};
 document.querySelectorAll('.card[data-embed]').forEach(c=>c.addEventListener('click',()=>{cur=c;if(blocked)fallback()}));
 addEventListener('securitypolicyviolation',e=>{if(/frame|child/.test(e.violatedDirective)){blocked=true;fallback()}});
+document.querySelectorAll('.carousel').forEach(c=>{
+  const t=c.querySelector('.track'),pv=c.querySelector('.prev'),nx=c.querySelector('.next');
+  const step=()=>{const k=t.querySelector('.card');return k?k.getBoundingClientRect().width+parseFloat(getComputedStyle(t).columnGap||0):t.clientWidth};
+  const upd=()=>{pv.disabled=t.scrollLeft<4;nx.disabled=t.scrollLeft+t.clientWidth>=t.scrollWidth-4;c.querySelector('.cbtns').hidden=t.scrollWidth<=t.clientWidth+4};
+  pv.addEventListener('click',()=>t.scrollBy({left:-step()}));nx.addEventListener('click',()=>t.scrollBy({left:step()}));
+  t.addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);upd();
+});
 const copy=document.getElementById('copy');
 copy.addEventListener('click',async()=>{try{await navigator.clipboard.writeText('cordovi.idan@gmail.com');copy.textContent='Email copied'}catch(_){copy.textContent='cordovi.idan@gmail.com'}});
 """
@@ -214,11 +235,8 @@ HTML = f"""<!doctype html>
 
 <div id="works">
 <section id="all-in"><div class="wrap">
-<div class="head"><span class="eyebrow">Studio productions · Camera, edit &amp; color</span><h2>All in Studios</h2></div>
-<h3>The Session with Dean Elbaz · Live music</h3>
-{grid(ALLIN_LIVE, "two")}
-<h3>The Itay Segal Podcast</h3>
-{grid(ALLIN_PODCAST, "two")}
+<div class="head"><span class="eyebrow">Live music sessions and podcasts · Camera, edit &amp; color</span><h2>All in Studios</h2></div>
+{carousel(ALLIN_LIVE + ALLIN_PODCAST, "All in Studios")}
 </div></section>
 
 <section id="who-cares"><div class="wrap">
@@ -237,15 +255,15 @@ HTML = f"""<!doctype html>
 
 <section id="safe-school"><div class="wrap">
 <div class="head"><span class="eyebrow">Educational video series</span><h2>Safe School Analytics</h2></div>
-{grid(SSA)}
+{carousel(SSA, "Safe School Analytics")}
 </div></section>
 
 <section id="brands"><div class="wrap">
 <div class="head"><span class="eyebrow">Brands and organizations</span><h2>Commercials &amp; Corporate</h2></div>
 <h3>Commercials</h3>
-{grid(COMMERCIALS)}
+{carousel(COMMERCIALS, "Commercials")}
 <h3>Corporate and organizations</h3>
-{grid(CORPORATE, "two")}
+{carousel(CORPORATE, "Corporate and organizations")}
 </div></section>
 
 <section id="formats"><div class="wrap">
