@@ -14,49 +14,51 @@ def ig(title, code, thumb, note=""):
     return dict(t=title, note=note, url=f"https://www.instagram.com/reel/{code}/", embed=f"https://www.instagram.com/reel/{code}/embed/",
                 thumb=thumb, host="Instagram")
 
-DOCU = [
- vm("Foodish Exhibition", 1033131649, "1956795982-511b9e8395575f9c02044c50314c599c1b4c5ee6240e882947c4f95e87d590ca", "Promo"),
- vm("Tech For Israel", 930612838, "1827425550-0176149a7bf268b2d4a15a70ade1e3188d81bf11063652c5ae30771d5ebccc00", "Documentary short film"),
- vm("EyeClick", 930606476, "1827414398-ec0f85348f29f4c68a397771759af8fc284ad18ca1b9a0245860e57e13df90b7", "Corporate video"),
- vm("V-ARMED", 966674304, "1956789599-500ae694eccf78318ba7ef4b429e6da54adfacf612ae63931a84a665fa3c1ca4", "Corporate video"),
- yt("Children of Dawn", "wqXiXFmjISc", "Daniel Dvir"),
-]
-EDU = [
- vm("Making History", 1032761269, "1954146575-51a65e3681896e8acd420c64acbc122ef4a5a6681b6de593b3ab5ae7f0fc5203", "Ben Gurion"),
- vm("Our Story", 1003485746, "1920056113-d0726781114893847fad15babff317ae824b7b0e58d03d1776c50861e09539a7", "Web series, social skills"),
- vm("At Eye Level with Rotem Sela", 856396361, "1713396605-46ee109137d52d5fc881e50617f2aa29cd3be12cb53f1bfa7e5176071cb8550f", "Bullying"),
- vm("Testimony from October 7th", 936250297, "1837810767-200484e493dd88e2ad2f82125145198d4865cdb062f8576e98ef0fc7e6f7f1eb", "Officer Eden Ram"),
- vm("Savings and Investments", 881594413, "1919074049-d09d80c283ccf4e3766244c3a96fba3deb8714f12d3ea149157233d53b2d1acd", "Shaul Amsterdamski"),
- vm("All the Way to the Top", 1027190091, "1956301717-6b2b1018ffbc8645e2a4e9fb815a1ee51509e5ca4268d0b3f56af0d69cb1a2d3", "Peter Paltchik"),
-]
-PROD = [
- vm("Sibus: Introduction", 966651464, "1881817738-899eb1577f24d51947fbcb32cefd5bbf63819a3a6004bbc4d761ef0660e521af", "Social media commercial"),
- vm("Sibus: People", 966651911, "1879628694-a42bc4c5ff4140ef95b0eab416d0a853dbb656cb898f2f6cccac5d80dde55153", "Social media commercial"),
- yt("SheCodes", "b63lotRY0d8", "Commercial"),
- yt("The Sofa: Rina Weissman", "UbM-_qiy7bE", "Short interview format"),
- yt("The Sofa: Moshik Roth", "9f_uoomWbZo", "Short interview format"),
- ig("Mazda with Lior Suchard", "C4ahVAUo0qn", "images/thumbs/mazda-1.jpg", "Commercial · Instagram reel"),
- ig("Mazda with Lior Suchard", "C3XbanLISH4", "images/thumbs/mazda-2.jpg", "Second commercial · Instagram reel"),
-]
-LIVE = [
+# Works are grouped by client or type of production. Each note says what Idan did.
+ALLIN_LIVE = [
  yt("Yeremi Kaplan", "DRhnP965je8", "Live session"),
  yt("Jacko Eisenberg", "JXECIKLr3Go", "Live session"),
  yt("Alma Gov", "YZZeJq5Zj84", "Live session"),
  yt("Liam Hachmon", "d3_nm4BfE9U", "Live session"),
 ]
-PODCAST = [
+for i, p in enumerate(ALLIN_LIVE, 1):
+    p["thumb"] = f"images/thumbs/live-{i}.jpg"   # studio photos with the shared film grade
+ALLIN_PODCAST = [
  yt("Yehonatan Margi", "tZ7jlnNBLqw", "“My home became a question”"),
 ]
-PODCAST[0]["thumb"] = "images/thumbs/tZ7jlnNBLqw.jpg"
-for i, p in enumerate(LIVE, 1):
-    p["thumb"] = f"images/thumbs/live-{i}.jpg"
-EDIT = [
- yt("Welcome To The Show Biz", "g35L0fLWzKg", "Short film · Editor · 2026"),
- vm("Our Story: Green and Red Lights in a Relationship", 1031027561, "1957595155-bbc77146afc16bd550d15530c73a9cdf2688e6c10074d3c82125c5bb34bde294", "Edit and color · 05:52"),
- yt("Water Girl", "-eWBzLyVscw", "Edit and color · 02:51"),
+SSA = [
+ vm("Making History", 1032761269, "", "Ben Gurion · Cinematography"),
+ vm("Our Story", 1003485746, "", "Web series on social skills · Cinematography"),
+ vm("Our Story: Green and Red Lights in a Relationship", 1031027561, "", "Web series · Edit & color"),
+ vm("At Eye Level with Rotem Sela", 856396361, "", "Bullying · Cinematography"),
+ vm("Testimony from October 7th", 936250297, "", "Officer Eden Ram · Cinematography"),
+ vm("Savings and Investments", 881594413, "", "Shaul Amsterdamski · Cinematography"),
+ vm("All the Way to the Top", 1027190091, "", "Peter Paltchik · Cinematography"),
 ]
-# Thumbnails are saved in images/thumbs (v00, v01, ... in page order, Instagram reels excluded)
-for p in DOCU + EDU + PROD + EDIT:  # each video's thumbnail is images/thumbs/<video id>.jpg
+COMMERCIALS = [
+ yt("SheCodes", "b63lotRY0d8", "Commercial · Producer"),
+ vm("Sibus: Introduction", 966651464, "", "Social media commercial · Producer"),
+ vm("Sibus: People", 966651911, "", "Social media commercial · Producer"),
+ ig("Mazda with Lior Suchard", "C4ahVAUo0qn", "images/thumbs/mazda-1.jpg", "Instagram reel · Producer"),
+ ig("Mazda with Lior Suchard", "C3XbanLISH4", "images/thumbs/mazda-2.jpg", "Second Instagram reel · Producer"),
+]
+CORPORATE = [
+ vm("Foodish Exhibition", 1033131649, "", "Exhibition promo · Cinematography"),
+ vm("Tech For Israel", 930612838, "", "Documentary short · Cinematography"),
+ vm("EyeClick", 930606476, "", "Corporate video · Cinematography"),
+ vm("V-ARMED", 966674304, "", "Corporate video · Cinematography"),
+]
+FORMATS = [
+ yt("The Sofa: Rina Weissman", "UbM-_qiy7bE", "Short interview format · Producer"),
+ yt("The Sofa: Moshik Roth", "9f_uoomWbZo", "Short interview format · Producer"),
+]
+FILMS = [
+ yt("Welcome To The Show Biz", "g35L0fLWzKg", "Short film, 2026 · Editor"),
+ yt("Water Girl", "-eWBzLyVscw", "02:51 · Edit & color"),
+ yt("Children of Dawn", "wqXiXFmjISc", "Daniel Dvir · Cinematography"),
+]
+# Every other video's thumbnail is images/thumbs/<video id>.jpg
+for p in ALLIN_PODCAST + SSA + COMMERCIALS + CORPORATE + FORMATS + FILMS:
     if p["host"] != "Instagram":
         p["thumb"] = f"images/thumbs/{p['url'].rstrip('/').split('v=')[-1].split('/')[-1]}.jpg"
 
@@ -201,7 +203,7 @@ HTML = f"""<!doctype html>
 <header><div class="wrap bar">
 <a class="brand" href="#top">Idan Cordovi</a>
 <nav aria-label="Main">
-<a href="#sessions">All in Studios</a><a href="#cinematography">Cinematography</a><a href="#producing">Producing</a><a href="#edit">Edit &amp; Color</a><a href="#contact">Contact</a>
+<a href="#works">Works</a><a href="#contact">Contact</a>
 </nav></div></header>
 <main id="top">
 <div class="wrap hero">
@@ -210,15 +212,16 @@ HTML = f"""<!doctype html>
 <div class="scope"><img src="{STILLS[HERO]}" alt="Still from the documentary Who Cares?" width="1600" height="670" fetchpriority="high"></div>
 </div>
 
-<section id="sessions"><div class="wrap">
-<div class="head"><span class="eyebrow">Camera, edit &amp; color</span><h2>All in Studios</h2></div>
+<div id="works">
+<section id="all-in"><div class="wrap">
+<div class="head"><span class="eyebrow">Studio productions · Camera, edit &amp; color</span><h2>All in Studios</h2></div>
 <h3>The Session with Dean Elbaz · Live music</h3>
-{grid(LIVE, "two")}
+{grid(ALLIN_LIVE, "two")}
 <h3>The Itay Segal Podcast</h3>
-{grid(PODCAST, "two")}
+{grid(ALLIN_PODCAST, "two")}
 </div></section>
 
-<section id="cinematography"><div class="wrap">
+<section id="who-cares"><div class="wrap">
 <div class="head"><span class="eyebrow">55 min documentary · Cinematography</span><h2>Who Cares?</h2>
 <dl class="credits">
 <div><dt>Produced by</dt><dd>Duetch &amp; Co</dd></div>
@@ -227,24 +230,34 @@ HTML = f"""<!doctype html>
 <div><dt>Editor</dt><dd>Michael Anug</dd></div>
 <div><dt>Post-production director</dt><dd>Rotem Gross</dd></div>
 </dl></div>
-<div class="reel" tabindex="0" aria-label="Stills from Who Cares, scroll sideways">
+<div class="reel" tabindex="0" aria-label="Stills from Who Cares?, scroll sideways">
 {stills}
 </div>
-<h3>Documentary and corporate</h3>
-{grid(DOCU)}
-<h3>Educational videos for Safe School Analytics</h3>
-{grid(EDU)}
 </div></section>
 
-<section id="producing"><div class="wrap">
-<div class="head"><span class="eyebrow">Commercials and formats</span><h2>Producing</h2></div>
-{grid(PROD)}
+<section id="safe-school"><div class="wrap">
+<div class="head"><span class="eyebrow">Educational video series</span><h2>Safe School Analytics</h2></div>
+{grid(SSA)}
 </div></section>
 
-<section id="edit"><div class="wrap">
-<div class="head"><span class="eyebrow">Post-production</span><h2>Edit &amp; Color</h2></div>
-{grid(EDIT)}
+<section id="brands"><div class="wrap">
+<div class="head"><span class="eyebrow">Brands and organizations</span><h2>Commercials &amp; Corporate</h2></div>
+<h3>Commercials</h3>
+{grid(COMMERCIALS)}
+<h3>Corporate and organizations</h3>
+{grid(CORPORATE, "two")}
 </div></section>
+
+<section id="formats"><div class="wrap">
+<div class="head"><span class="eyebrow">Interview format</span><h2>The Sofa</h2></div>
+{grid(FORMATS, "two")}
+</div></section>
+
+<section id="films"><div class="wrap">
+<div class="head"><span class="eyebrow">Short films and music</span><h2>Films</h2></div>
+{grid(FILMS)}
+</div></section>
+</div>
 </main>
 
 <div class="contact" id="contact"><div class="wrap">
