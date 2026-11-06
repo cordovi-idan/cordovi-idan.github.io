@@ -44,6 +44,10 @@ LIVE = [
  yt("Alma Gov", "YZZeJq5Zj84", "Live session"),
  yt("Liam Hachmon", "d3_nm4BfE9U", "Live session"),
 ]
+PODCAST = [
+ yt("Yehonatan Margi", "tZ7jlnNBLqw", "“My home became a question”"),
+]
+PODCAST[0]["thumb"] = "images/thumbs/tZ7jlnNBLqw.jpg"
 for i, p in enumerate(LIVE, 1):
     p["thumb"] = f"images/thumbs/live-{i}.jpg"
 EDIT = [
@@ -197,7 +201,7 @@ HTML = f"""<!doctype html>
 <header><div class="wrap bar">
 <a class="brand" href="#top">Idan Cordovi</a>
 <nav aria-label="Main">
-<a href="#sessions">Live Sessions</a><a href="#cinematography">Cinematography</a><a href="#producing">Producing</a><a href="#edit">Edit &amp; Color</a><a href="#contact">Contact</a>
+<a href="#sessions">All in Studios</a><a href="#cinematography">Cinematography</a><a href="#producing">Producing</a><a href="#edit">Edit &amp; Color</a><a href="#contact">Contact</a>
 </nav></div></header>
 <main id="top">
 <div class="wrap hero">
@@ -207,8 +211,11 @@ HTML = f"""<!doctype html>
 </div>
 
 <section id="sessions"><div class="wrap">
-<div class="head"><span class="eyebrow">All in Studios · Camera, edit &amp; color</span><h2>The Session with Dean Elbaz</h2></div>
+<div class="head"><span class="eyebrow">Camera, edit &amp; color</span><h2>All in Studios</h2></div>
+<h3>The Session with Dean Elbaz · Live music</h3>
 {grid(LIVE, "two")}
+<h3>The Itay Segal Podcast</h3>
+{grid(PODCAST, "two")}
 </div></section>
 
 <section id="cinematography"><div class="wrap">
