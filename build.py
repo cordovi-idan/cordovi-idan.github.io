@@ -146,6 +146,7 @@ h3{margin:44px 0 20px;font:700 clamp(26px,3.4vw,36px)/1.05 var(--display);text-t
 .cbar{display:flex;align-items:center;justify-content:space-between;gap:16px}
 .count{font:500 12px/1.5 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .cbtns{display:flex;gap:8px;margin-left:auto}
+.cbtns[hidden]{display:none}
 .cbtns button{width:44px;height:44px;border:1px solid var(--line);background:none;color:var(--paper);font:400 20px/1 var(--body);cursor:pointer}
 .cbtns button:hover:not(:disabled){border-color:var(--finder);color:var(--finder)}
 .cbtns button:disabled{opacity:.3;cursor:default}
